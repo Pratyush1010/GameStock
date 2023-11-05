@@ -5,6 +5,7 @@ import time
 import utils as ut
 from plotly import graph_objs as go
 import pie
+import pandas as pd
 Level = [1, 2, 3, 4, 5]
 currLevel = st.selectbox("Choose Level ", Level)
 investment = pf.getInvest()
@@ -46,7 +47,7 @@ portfolio_container = st.empty()
 portfolio_container.table(pf.getPortfolio())
 stocks = {"Google":'GOOG', "Apple":'AAPL', "Microsoft":'MSFT', "Amazon":'AMZN'}
 
-
+metrics_data = None
 col1, col2 = st.columns([1, 2])
 with col1:
     selected_stock = st.selectbox('Choose stock', stocks.keys())
@@ -54,6 +55,8 @@ with col1:
     if currLevel==1:
         st.markdown('<div class="message">Prompt input YOY</div>', unsafe_allow_html=True)   
     message_container = st.empty()
+    if currLevel==2:
+        metrics_message = st.empty()
     if currLevel >= 3:
          pie.setPie(st)
 
@@ -68,11 +71,18 @@ def plot_raw_data(data):
 with col2:
     data = ut.load_data(selected_stock, stocks)
     plot_raw_data(data)
-    if currLevel >= 2:
-        st.subheader("Stock Metrics")
-        data_table = ut.load_fast_info(selected_stock, stocks)
-        
-        st.table(data_table)
+
+    
+if currLevel >= 2:
+    data_table = ut.load_fast_info(selected_stock, stocks)
+    st.table(data_table)
+    metrics_data = data_table
+if currLevel == 2:
+    for tab in st.tabs(metrics_data.keys()):
+         with tab:
+              content = int(str(tab).split("RunningCursor(_parent_path=(9, ")[1].split(")")[0])
+              st.markdown(content)
+              
 action = st.selectbox("Action", ["Buy", "Sell"])
 symbol = st.text(selected_stock)
 shares = st.number_input("Shares", min_value=1)
