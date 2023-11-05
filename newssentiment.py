@@ -23,11 +23,11 @@ def get_mean_sentiment_score(tickers):
     if r.status_code == 200:
         # Parse the JSON response
         data = r.json()
-
+        print(data) 
         # Create a DataFrame
         df = pd.DataFrame(data)
         
-
+        
         # Explode the 'feed' column into individual rows
         df = pd.json_normalize(df['feed'])
         df1 = df[['summary','overall_sentiment_score']]

@@ -45,6 +45,12 @@ with col1:
 with col3:
     progress_text = "Level "+str(currLevel)
     my_bar = st.progress(rand.randint(30,80), text=progress_text)
+    with open("TradeReport.pdf", "rb") as file:
+        btn = st.download_button(
+            label="Download Progress Report",
+            data=file,
+            file_name="TradeReport.pdf"
+          )
 col1, col2 = st.columns([1,2])
 with col1:
     amount = st.empty()
@@ -108,7 +114,7 @@ with col1:
     selected_stock = st.selectbox('Choose stock', stocks.keys())
     #Display a message 
     if currLevel==1:
-        st.markdown('<div class="message">The horizontal (x-axis) typically represents time, with the most recent data on the right and older data on the left. The vertical (y-axis) represents the stock price or another relevant metric, such as volume or a technical indicator. Identify the Stock Symbol and Timeframe:Ensure you know which stock you are analyzing and the chosen timeframe (e.g., daily, weekly, monthly). Analyze the Price Movement: Look at the overall direction of the stocks price movement.</div>', unsafe_allow_html=True)   
+        st.info('The horizontal (x-axis) typically represents time, with the most recent data on the right and older data on the left. The vertical (y-axis) represents the stock price or another relevant metric, such as volume or a technical indicator. Identify the Stock Symbol and Timeframe:Ensure you know which stock you are analyzing and the chosen timeframe (e.g., daily, weekly, monthly). Analyze the Price Movement: Look at the overall direction of the stocks price movement.',icon='🤖' )   
     message_container = st.empty()
     if currLevel==2:
         metrics_message = st.empty()
@@ -126,6 +132,8 @@ def plot_raw_data(data):
 with col2:
     data = ut.load_data(selected_stock, stocks)
     plot_raw_data(data)
+    if currLevel == 3:
+        sectorMessageContainer = st.info("Sector-wise performance analysis is a crucial aspect of stock profitability assessment, with investors using it to gauge economic prospects. Top-down and sector rotation approaches are common strategies, with the former emphasizing macroeconomic conditions in the search for outperforming companies. Continuous monitoring of major sector trends, involving market capitalization changes and the count of advancing and declining stocks, allows investors to identify promising sectors for investment based on varying economic conditions and investment periods.", icon='🤖')
     if currLevel >=4:
      newsData = ns.get_mean_sentiment_score(stocks[selected_stock])
      col1, col2, col3, col4 = st.columns(4)
@@ -144,7 +152,7 @@ if currLevel == 2:
     for tab in st.tabs(metrics_data.keys()):
          with tab:
                content = int(str(tab).split("RunningCursor(_parent_path=(10, ")[1].split(")")[0])
-               st.markdown(ut.metrics_detail(list(metrics_data.keys())[content]))
+               st.info(ut.metrics_detail(list(metrics_data.keys())[content]), icon="🤖")
             
 
 action = st.selectbox("Action", ["Buy", "Sell"])
