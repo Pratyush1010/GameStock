@@ -1,6 +1,6 @@
 import pandas as pd
 import yfinance as yf
-investment = {'amount':10000}
+investment = {'amount':100000}
 portfolio = {}
 
 def getInvest():
