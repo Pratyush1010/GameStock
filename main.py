@@ -50,7 +50,9 @@ stocks = {"Google":'GOOG', "Apple":'AAPL', "Microsoft":'MSFT', "Amazon":'AMZN'}
 col1, col2 = st.columns([1, 2])
 with col1:
     selected_stock = st.selectbox('Choose stock', stocks.keys())
-    #Display a message    
+    #Display a message 
+    if currLevel==1:
+        st.markdown('<div class="message">Prompt input YOY</div>', unsafe_allow_html=True)   
     message_container = st.empty()
     if currLevel >= 3:
          pie.setPie(st)
@@ -69,6 +71,7 @@ with col2:
     if currLevel >= 2:
         st.subheader("Stock Metrics")
         data_table = ut.load_fast_info(selected_stock, stocks)
+        
         st.table(data_table)
 action = st.selectbox("Action", ["Buy", "Sell"])
 symbol = st.text(selected_stock)
@@ -91,9 +94,9 @@ if st.button("Execute"):
 #Q&A
 context = ""
 answerbox = st.empty()
-context = answerbox.text_area("Your query will be answered here:", value=context, key="context")
+context = answerbox.code(context, language="markdown")
 question = st.text_input("Enter Question:")
 if st.button("Get Answer"):
     answer="Hello got to the answer"
 	#answer = answer_question(context, question)
-    context = answerbox.text_area("",value=answer, key="answer", disabled=True)
+    context = answerbox.code(answer, language="markdown")
