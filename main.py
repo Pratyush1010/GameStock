@@ -87,3 +87,13 @@ if st.button("Execute"):
         pf.setInvest(investment)
         amount.text("Investment:$"+str(investment))
         portfolio_container.table(pf.getPortfolio())
+
+#Q&A
+context = ""
+answerbox = st.empty()
+context = answerbox.text_area("Your query will be answered here:", value=context, key="context")
+question = st.text_input("Enter Question:")
+if st.button("Get Answer"):
+    answer="Hello got to the answer"
+	#answer = answer_question(context, question)
+    context = answerbox.text_area("",value=answer, key="answer", disabled=True)
